@@ -23,17 +23,21 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: |
-          # If gradlew is missing, download it from Gradle wrapper template
+          # Ensure gradlew exists
           if [ ! -f "gradlew" ]; then
             curl -O https://raw.githubusercontent.com/gradle/gradle/master/gradlew
             curl -O https://raw.githubusercontent.com/gradle/gradle/master/gradlew.bat
-            # Also download gradle-wrapper.jar if it's completely missing
-            if [ ! -d "gradle/wrapper" ]; then
-              mkdir -p gradle/wrapper
-              curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.jar
-              curl -L -o gradle/wrapper/gradle-wrapper.properties https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.properties
-            fi
           fi
+          
+          # Ensure gradle wrapper directory and files exist
+          mkdir -p gradle/wrapper
+          if [ ! -f "gradle/wrapper/gradle-wrapper.jar" ]; then
+            curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.jar
+          fi
+          if [ ! -f "gradle/wrapper/gradle-wrapper.properties" ]; then
+            curl -L -o gradle/wrapper/gradle-wrapper.properties https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.properties
+          fi
+          
           chmod +x gradlew
 
       - name: Build Debug APK
