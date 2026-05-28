@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ringl Cybernetic Palette -->
+    <color name="primary">#00E5FF</color>
+    <color name="primary_dark">#00BCD4</color>
+    <color name="primary_glow">#4D00E5FF</color>
+    <color name="accent">#81ecff</color>
+
+    <color name="background">#060e20</color>
+    <color name="on_background">#dee5ff</color>
+    <color name="surface">#0f1930</color>
+    <color name="on_surface">#dee5ff</color>
+    <color name="surface_container">#192540</color>
+
+    <color name="divider">#40485d</color>
+    <color name="outline">#40485d</color>
+    <color name="info_bg">#141f38</color>
+
+    <color name="status_active">#00E5FF</color>
+    <color name="status_inactive">#ff716c</color>
+</resources>

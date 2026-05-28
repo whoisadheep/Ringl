@@ -1,0 +1,46 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Grant execute permission for gradlew
+        run: |
+          # If gradlew is missing, download it from Gradle wrapper template
+          if [ ! -f "gradlew" ]; then
+            curl -O https://raw.githubusercontent.com/gradle/gradle/master/gradlew
+            curl -O https://raw.githubusercontent.com/gradle/gradle/master/gradlew.bat
+            # Also download gradle-wrapper.jar if it's completely missing
+            if [ ! -d "gradle/wrapper" ]; then
+              mkdir -p gradle/wrapper
+              curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.jar
+              curl -L -o gradle/wrapper/gradle-wrapper.properties https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.properties
+            fi
+          fi
+          chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ringl-App-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
